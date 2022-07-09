@@ -1,0 +1,6 @@
+.parallex{
+    background-image: url('../Images/Container_1.jpg');
+    background-size: cover;
+    height: 720px;
+    background-attachment: fixed;
+}

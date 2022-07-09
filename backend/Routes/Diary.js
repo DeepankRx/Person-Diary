@@ -6,4 +6,5 @@ router.get('/getDiary', diaryController.getDiary);
 router.post('/postDiary', diaryController.postDiary);
 router.delete('/deleteDiary/:id', diaryController.deleteDiary);
 router.put('/updateDiary/:id', diaryController.updateDiary);
+router.get('/getDiaryById/:id', diaryController.getDiaryById);
 module.exports = router;

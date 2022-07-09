@@ -1,25 +1,52 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import "../CSS/Feed.css";
 const Feed = () => {
+  const params = useParams();
+  const [prevTitle, setPrevTitle] = useState("");
+  const [prevDesc, setPrevDesc] = useState("");
+  const backendUrlForSingleDiary =
+    "http://localhost:9000/api/diary/getDiaryById/" + params.id;
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(backendUrlForSingleDiary, {
+          withCredentials: true,
+        });
+        console.log(response.data);
+        setPrevTitle(response.data.title);
+        setPrevDesc(response.data.description);
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    }
+    fetchData();
+  }, []);
+
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
-  const backendUrl = "http://localhost:9000/api/diary/postDiary";
+  const backendUrlForUpdatingDiary =
+    "http://localhost:9000/api/diary/updateDiary/" + params.id;
   const submitHandler = (event) => {
     event.preventDefault();
-    if (!title.length && !desc.length) alert("Add Title and Description");
-    else if (title.length === 0) {
-      alert("Enter Title");
-    } else if (desc.length == 0) {
-      alert("Enter Description");
-    } else {
+    if(!title)
+    {
+        setTitle(prevTitle);
+    }
+    if(!desc)
+    {
+        setDesc(prevDesc);
+    }
+  
       const currentTime = new Date();
       console.log(currentTime);
       console.log(title);
       console.log(desc);
       axios
-        .post(
-          backendUrl,
+        .put(
+          backendUrlForUpdatingDiary,
           {
             date: currentTime,
             title: title,
@@ -36,8 +63,6 @@ const Feed = () => {
           console.log(err.response.data);
         });
     
-   
-    }
   };
   return (
     <div className="feed">
@@ -45,7 +70,7 @@ const Feed = () => {
         <div className="box">
           <label>Title</label>
           <input
-            onChange={(event) => setTitle(event.target.value)}
+            onChange={(event) => {setTitle(event.target.value)}}
             value={title}
             type="text"
           ></input>

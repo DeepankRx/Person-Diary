@@ -2,9 +2,9 @@ const Diary = require("../Model/Diary");
 exports.getDiary = (req, res) => {
   Diary.find({}, (err, diary) => {
     if (err) {
-      res.status(200).send(err);
+      res.status(404).send(err);
     }
-    res.status(404).json(diary);
+    res.status(200).json(diary);
   }).sort({ date: -1 });
 };
 exports.postDiary = (req, res) => {
@@ -18,7 +18,7 @@ exports.postDiary = (req, res) => {
   diary
     .save((err, diary) => {
       if (err) {
-        res.status(200).send(err);
+        res.status(400).send(err);
       }
       res.status(200).json(diary);
     })
@@ -26,7 +26,7 @@ exports.postDiary = (req, res) => {
 exports.deleteDiary = (req, res) => {
   Diary.findByIdAndRemove(req.params.id, (err, diary) => {
     if (err) {
-      res.status(200).send(err);
+      res.status(400).send(err);
     }
     res.status(200).json(diary);
   })
@@ -42,9 +42,17 @@ exports.updateDiary = (req, res) => {
     },
     (err, diary) => {
       if (err) {
-        res.status(200).send(err);
+        res.status(400).send(err);
       }
       res.status(200).json(diary);
     }
   ).sort({ date: -1 });
 };
+exports.getDiaryById = (req, res) => {
+  Diary.findById(req.params.id, (err, diary) => {
+    if (err) {
+      res.status(400).send(err);
+    }
+    res.status(200).json(diary);
+  }).sort({ date: -1 });
+}

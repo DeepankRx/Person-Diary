@@ -11,10 +11,10 @@ app.use(
     extended: true,
   })
 );
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(bodyParser.json());
 app.use(express.json());
 app.use("/api/diary", diaryRouter);
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.listen(9000, () => {
   console.log("Server is running on port 3000");
 });
