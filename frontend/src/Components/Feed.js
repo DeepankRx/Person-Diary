@@ -4,6 +4,7 @@ import "../CSS/Feed.css";
 const Feed = () => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const backendUrl = "http://localhost:9000/api/diary/postDiary";
   const submitHandler = (event) => {
     event.preventDefault();
@@ -21,9 +22,11 @@ const Feed = () => {
         .post(
           backendUrl,
           {
+            name: localStorage.getItem("name"),
             date: currentTime,
             title: title,
             description: desc,
+            imageUrl: imageUrl,
           },
           {
             withCredentials: true,
@@ -35,8 +38,6 @@ const Feed = () => {
         .catch((err) => {
           console.log(err.response.data);
         });
-    
-   
     }
   };
   return (
@@ -59,6 +60,13 @@ const Feed = () => {
             type={desc}
             value={desc}
           ></textarea>
+        </div>
+        <div className="box">
+          <label>Image</label>
+          <input
+            onChange={(event) => setImageUrl(event.target.value)}
+            type="text"
+          ></input>
         </div>
         <button>SUBMIT</button>
       </form>

@@ -27,19 +27,13 @@ const Feed = () => {
 
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const backendUrlForUpdatingDiary =
     "http://localhost:9000/api/diary/updateDiary/" + params.id;
   const submitHandler = (event) => {
     event.preventDefault();
-    if(!title)
-    {
-        setTitle(prevTitle);
-    }
-    if(!desc)
-    {
-        setDesc(prevDesc);
-    }
-  
+   
+    if(title.length > 0 && desc.length > 0){
       const currentTime = new Date();
       console.log(currentTime);
       console.log(title);
@@ -51,6 +45,7 @@ const Feed = () => {
             date: currentTime,
             title: title,
             description: desc,
+            imageUrl: imageUrl,
           },
           {
             withCredentials: true,
@@ -62,7 +57,10 @@ const Feed = () => {
         .catch((err) => {
           console.log(err.response.data);
         });
-    
+      }
+    else{
+      alert("Enter Title and Description");
+    }
   };
   return (
     <div className="feed">
@@ -85,6 +83,17 @@ const Feed = () => {
             value={desc}
           ></textarea>
         </div>
+        <div className="box">
+          <label>Image</label>
+          <input
+            onChange={(event) => {
+              setImageUrl(event.target.value);
+            }
+            }
+            type="text"
+          ></input>
+        </div>
+        
         <button>SUBMIT</button>
       </form>
     </div>
